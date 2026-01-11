@@ -54,9 +54,21 @@ npm run start:prod
 ```
 
 ## API Features
+- **Swagger Documentation**: Available at `/api/docs`
+- **Containerization**: Fully Dockerized for development and production.
 - **Public Routes**: Product listing, search, category browsing.
-- **Customer Routes**: Profile management, order placement (JWT protected).
-- **Admin Routes**: Full CRUD on products, categories, and order management (JWT + Role protected).
+- **Customer Routes**: Profile management, order placement (Firebase protected).
+- **Admin Routes**: Full CRUD on products, categories, and order management (Firebase + Role protected).
+
+## Docker Development
+To start the entire stack (Node.js + MongoDB):
+```bash
+docker-compose up --build
+```
+
+## API Documentation
+The API is fully documented using Swagger. Once the app is running, visit:
+`http://localhost:3000/api/docs`
 
 ## Admin Access
 To create an admin user, register via `/auth/register` with `role: "admin"`. In production, this should be restricted via an `ADMIN_SECRET` or manual database entry.

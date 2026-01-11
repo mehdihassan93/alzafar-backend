@@ -15,8 +15,15 @@ export class Product extends Document {
     @Prop({ required: true })
     stock: number;
 
-    @Prop({ type: [String], default: [] })
-    images: string[];
+    @Prop({
+        type: [{
+            large: { type: String, required: true },
+            medium: { type: String, required: true },
+            thumbnail: { type: String, required: true },
+        }],
+        default: []
+    })
+    images: { large: string; medium: string; thumbnail: string }[];
 
     @Prop({ type: Types.ObjectId, ref: 'Category', required: true })
     category: Types.ObjectId;
@@ -26,3 +33,10 @@ export class Product extends Document {
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
+
+// Optimal Search Indexing:
+// High weight on Name, medium on Description.
+ProductSchema.index(
+    { name: 'text', description: 'text' },
+    { weights: { name: 10, description: 5 }, name: 'ProductSearchIndex' }
+);

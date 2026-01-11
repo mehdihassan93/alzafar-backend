@@ -26,7 +26,32 @@ export class UsersService {
         return this.userModel.findOne({ email }).exec();
     }
 
+    async findByFirebaseUid(firebaseUid: string): Promise<User | null> {
+        return this.userModel.findOne({ firebaseUid }).exec();
+    }
+
     async findById(id: string): Promise<User | null> {
         return this.userModel.findById(id).exec();
+    }
+
+    async createFromFirebase(data: { firebaseUid: string, email: string, firstName: string, lastName: string }): Promise<User> {
+        const existing = await this.userModel.findOne({
+            $or: [{ email: data.email }, { firebaseUid: data.firebaseUid }]
+        });
+
+        if (existing) {
+            if (!existing.firebaseUid) {
+                existing.firebaseUid = data.firebaseUid;
+                return existing.save();
+            }
+            return existing;
+        }
+
+        const createdUser = new this.userModel({
+            ...data,
+            role: UserRole.USER,
+            isActive: true,
+        });
+        return createdUser.save();
     }
 }

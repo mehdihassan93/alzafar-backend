@@ -9,12 +9,24 @@ import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 import { OrdersModule } from './orders/orders.module';
 import { CommonModule } from './common/common.module';
+import { CartsModule } from './carts/carts.module';
+import { WishlistsModule } from './wishlists/wishlists.module';
+import { FirebaseModule } from './firebase/firebase.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { MediaModule } from './media/media.module';
+import { FraudModule } from './fraud/fraud.module';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    ThrottlerModule.forRoot([{
+      ttl: 60000,
+      limit: 10,
+    }]),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
@@ -28,8 +40,20 @@ import { CommonModule } from './common/common.module';
     CategoriesModule,
     OrdersModule,
     CommonModule,
+    CartsModule,
+    WishlistsModule,
+    FirebaseModule,
+    NotificationsModule,
+    MediaModule,
+    FraudModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule { }
