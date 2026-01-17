@@ -46,7 +46,7 @@ Create a `.env` file in the root directory:
 ```env
 # Server
 PORT=3000
-MONGODB_URI=mongodb+srv://...
+MONGODB_URI=mongodb+srv://<your-mongodb-uri>
 
 # Firebase
 FIREBASE_PROJECT_ID=...
