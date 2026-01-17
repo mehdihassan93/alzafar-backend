@@ -5,9 +5,9 @@ import { AuthModule } from '../auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-    imports: [AuthModule, ConfigModule],
-    providers: [MediaService],
-    controllers: [MediaController],
-    exports: [MediaService],
+  imports: [AuthModule, ConfigModule],
+  providers: [MediaService],
+  controllers: [MediaController],
+  exports: [MediaService],
 })
-export class MediaModule { }
+export class MediaModule {}

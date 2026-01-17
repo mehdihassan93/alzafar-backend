@@ -18,7 +18,9 @@ import { FirebaseModule } from '../firebase/firebase.module';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: configService.get<string>('JWT_EXPIRATION') as any },
+        signOptions: {
+          expiresIn: configService.get<string>('JWT_EXPIRATION') as any,
+        },
       }),
       inject: [ConfigService],
     }),
@@ -27,4 +29,4 @@ import { FirebaseModule } from '../firebase/firebase.module';
   controllers: [AuthController],
   exports: [AuthService, FirebaseAuthGuard, UsersModule],
 })
-export class AuthModule { }
+export class AuthModule {}

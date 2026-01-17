@@ -1,9 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrdersService } from './orders.service';
-import { getModelToken } from '@nestjs/mongoose';
+import { getModelToken, getConnectionToken } from '@nestjs/mongoose';
 import { Order } from './schemas/order.schema';
 import { ProductsService } from '../products/products.service';
+import { UsersService } from '../users/users.service';
 import { FraudService } from '../fraud/fraud.service';
+import { CouponsService } from '../coupons/coupons.service';
+import { EmailService } from '../email/email.service';
 
 describe('OrdersService', () => {
   let service: OrdersService;
@@ -13,8 +16,21 @@ describe('OrdersService', () => {
     findOne: jest.fn(),
     update: jest.fn(),
   };
+  const mockUsersService = {
+    findByFirebaseUid: jest.fn(),
+    findById: jest.fn(),
+  };
+  const mockEmailService = {
+    sendOrderConfirmation: jest.fn(),
+    sendOrderStatusUpdate: jest.fn(),
+  };
   const mockFraudService = {
     checkOrder: jest.fn().mockResolvedValue({ isFlagged: false, score: 0 }),
+  };
+  const mockCouponsService = {
+    validateCoupon: jest.fn(),
+    calculateDiscount: jest.fn(),
+    incrementUsedCount: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -30,9 +46,32 @@ describe('OrdersService', () => {
           useValue: mockProductsService,
         },
         {
+          provide: UsersService,
+          useValue: mockUsersService,
+        },
+        {
           provide: FraudService,
           useValue: mockFraudService,
-        }
+        },
+        {
+          provide: CouponsService,
+          useValue: mockCouponsService,
+        },
+        {
+          provide: EmailService,
+          useValue: mockEmailService,
+        },
+        {
+          provide: getConnectionToken(),
+          useValue: {
+            startSession: jest.fn().mockResolvedValue({
+              startTransaction: jest.fn(),
+              commitTransaction: jest.fn(),
+              abortTransaction: jest.fn(),
+              endSession: jest.fn(),
+            }),
+          },
+        },
       ],
     }).compile();
 
@@ -54,6 +93,7 @@ describe('OrdersService', () => {
         user: userId,
         status: 'pending',
         items: [{ product: productId, quantity: 2 }],
+        timeline: [],
         save: jest.fn().mockResolvedValue({ status: 'cancelled' }),
       };
 

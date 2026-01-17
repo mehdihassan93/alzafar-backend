@@ -8,14 +8,16 @@ import { AuthModule } from '../auth/auth.module';
 import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
-    imports: [
-        MongooseModule.forFeature([{ name: Wishlist.name, schema: WishlistSchema }]),
-        CartsModule,
-        AuthModule,
-        NotificationsModule,
-    ],
-    providers: [WishlistsService],
-    controllers: [WishlistsController],
-    exports: [WishlistsService],
+  imports: [
+    MongooseModule.forFeature([
+      { name: Wishlist.name, schema: WishlistSchema },
+    ]),
+    CartsModule,
+    AuthModule,
+    NotificationsModule,
+  ],
+  providers: [WishlistsService],
+  controllers: [WishlistsController],
+  exports: [WishlistsService],
 })
-export class WishlistsModule { }
+export class WishlistsModule {}

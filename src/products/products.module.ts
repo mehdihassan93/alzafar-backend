@@ -6,6 +6,7 @@ import { Product, ProductSchema } from './schemas/product.schema';
 import { CartsModule } from '../carts/carts.module';
 import { WishlistsModule } from '../wishlists/wishlists.module';
 import { AuthModule } from '../auth/auth.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -13,8 +14,9 @@ import { AuthModule } from '../auth/auth.module';
     CartsModule,
     WishlistsModule,
     AuthModule,
+    UsersModule,
   ],
   providers: [ProductsService],
   controllers: [ProductsController],
 })
-export class ProductsModule { }
+export class ProductsModule {}

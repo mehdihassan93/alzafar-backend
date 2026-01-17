@@ -7,31 +7,31 @@ import { FirebaseAuthGuard } from '../auth/guards/firebase-auth.guard';
 import { RolesGuard } from '../common/guards/roles.guard';
 
 describe('CartsController', () => {
-    let controller: CartsController;
+  let controller: CartsController;
 
-    const mockCartsService = {};
-    const mockUsersService = {};
-    const mockFirebaseAdmin = {};
+  const mockCartsService = {};
+  const mockUsersService = {};
+  const mockFirebaseAdmin = {};
 
-    beforeEach(async () => {
-        const module: TestingModule = await Test.createTestingModule({
-            controllers: [CartsController],
-            providers: [
-                { provide: CartsService, useValue: mockCartsService },
-                { provide: UsersService, useValue: mockUsersService },
-                { provide: FIREBASE_ADMIN, useValue: mockFirebaseAdmin },
-            ],
-        })
-            .overrideGuard(FirebaseAuthGuard)
-            .useValue({ canActivate: () => true })
-            .overrideGuard(RolesGuard)
-            .useValue({ canActivate: () => true })
-            .compile();
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [CartsController],
+      providers: [
+        { provide: CartsService, useValue: mockCartsService },
+        { provide: UsersService, useValue: mockUsersService },
+        { provide: FIREBASE_ADMIN, useValue: mockFirebaseAdmin },
+      ],
+    })
+      .overrideGuard(FirebaseAuthGuard)
+      .useValue({ canActivate: () => true })
+      .overrideGuard(RolesGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
 
-        controller = module.get<CartsController>(CartsController);
-    });
+    controller = module.get<CartsController>(CartsController);
+  });
 
-    it('should be defined', () => {
-        expect(controller).toBeDefined();
-    });
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
+  });
 });

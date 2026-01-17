@@ -6,6 +6,8 @@ import { Order, OrderSchema } from './schemas/order.schema';
 import { AuthModule } from '../auth/auth.module';
 import { ProductsModule } from '../products/products.module';
 import { FraudModule } from '../fraud/fraud.module';
+import { CouponsModule } from '../coupons/coupons.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -13,9 +15,11 @@ import { FraudModule } from '../fraud/fraud.module';
     AuthModule,
     ProductsModule,
     FraudModule,
+    CouponsModule,
+    UsersModule,
   ],
   controllers: [OrdersController],
   providers: [OrdersService],
   exports: [OrdersService],
 })
-export class OrdersModule { }
+export class OrdersModule {}
